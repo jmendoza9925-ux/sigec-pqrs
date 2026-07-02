@@ -2,6 +2,20 @@
 
 Sistema de escritorio para la gestión integral de PQRS (Peticiones, Quejas, Reclamos y Sugerencias) de clientes. Construido con Python y Tkinter, sigue una arquitectura MVC con patrones de diseño Factory, Strategy y Observer.
 
+## Problema
+
+En muchas organizaciones, la gestión de clientes y PQRS se realiza de forma manual o en múltiples herramientas aisladas, generando pérdida de trazabilidad, retrasos en la atención, duplicidad de información y dificultad para priorizar casos críticos.
+
+Esta problemática afecta la eficiencia operativa y la calidad del servicio al cliente, especialmente cuando se manejan grandes volúmenes de solicitudes.
+
+SIGEC surge como solución para centralizar, organizar y optimizar este proceso.
+
+## Objetivo
+
+Desarrollar una aplicación de escritorio que permita gestionar clientes y administrar PQRS de forma centralizada, integrando funcionalidades de registro, consulta, actualización, seguimiento y trazabilidad mediante una interfaz gráfica conectada a una base de datos.
+
+El sistema busca mejorar la organización, priorización y control de las solicitudes, facilitando la toma de decisiones y reduciendo tiempos de respuesta.
+
 ## Arquitectura
 
 ```
@@ -18,6 +32,64 @@ database.py     → Persistencia (SQLite)
 - **Factory** (`FabricaPQRS`): Creación polimórfica de PQRS según tipo.
 - **Strategy** (`EstrategiaPrioridad`): Cálculo de prioridad según tipo de PQRS.
 - **Observer** (`NotificadorCliente`, `NotificadorAgente`): Notificaciones ante eventos del sistema.
+
+## Base de Datos
+
+SIGEC utiliza SQLite como motor de persistencia local, permitiendo almacenar y consultar información de forma rápida y estructurada.
+
+El sistema se compone de tres tablas principales:
+
+### clientes
+
+Almacena la información maestra de cada cliente.
+
+Campos principales:
+
+- id
+- cedula
+- nombre
+- telefono
+- correo
+- direccion
+- tipo_cliente
+- estado_cliente
+
+### pqrs
+
+Contiene las solicitudes registradas por los clientes.
+
+Campos principales:
+
+- id
+- radicado
+- cliente_id
+- tipo
+- asunto
+- descripcion
+- prioridad
+- estado
+- canal_ingreso
+- fecha_creacion
+
+### pqrs_logs
+
+Registra la trazabilidad completa de cada PQRS.
+
+Campos principales:
+
+- id
+- pqrs_id
+- tipo_evento
+- estado_anterior
+- estado_nuevo
+- comentario
+- usuario
+- fecha_evento
+
+### Relaciones
+
+Cliente (1) → (N) PQRS  
+PQRS (1) → (N) Logs
 
 ## Tecnologías
 
@@ -36,14 +108,24 @@ database.py     → Persistencia (SQLite)
 - **Importación Masiva**: Carga de clientes y PQRS desde archivos Excel con validación y resumen.
 - **Scroll Inteligente**: Interfaz con header fijo y cuerpo scrollable.
 
+## Beneficios
+
+SIGEC aporta múltiples beneficios operativos:
+
+- Centralización de la información del cliente.
+- Registro estructurado de solicitudes PQRS.
+- Priorización automática según tipo de requerimiento.
+- Seguimiento completo mediante historial y trazabilidad.
+- Reducción de tiempos de respuesta.
+- Gestión masiva de clientes y PQRS mediante archivos Excel.
+- Mayor control sobre el estado de cada solicitud.
+- Mejor experiencia para el usuario final.
+
 ## Instalación
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/sigec.git
-cd sigec
-
-# Instalar dependencias
+git clone https://github.com/jmendoza9925-ux/sigec-pqrs.git
+cd sigec-pqrs
 pip install -r requirements.txt
 ```
 
@@ -83,4 +165,6 @@ Usar el botón **📥 Importar PQRS** en la sección PQRS. Descargue la plantill
 
 ## Licencia
 
-MIT
+Uso académico.
+
+Proyecto desarrollado para la asignatura de Programación Avanzada como evidencia práctica de implementación de interfaces gráficas, persistencia de datos y patrones de diseño.
